@@ -1,0 +1,22 @@
+.mastodon-posts > .toot {
+  border-bottom: 2px solid black;
+  margin-bottom: 10px;
+}
+.mastodon-posts .toot-time {
+  font-size: smaller;
+}
+.mastodon-posts .toot-user {
+  font-weight: bolder;
+  text-decoration: underline;
+}
+.mastodon-posts .toot-content {
+  width: 200px;
+  overflow-x: auto;
+}
+.mastodon-posts .toot-image {
+  width: 200px;
+}
+.mastodon-posts .error {
+  color: red;
+  font-weight: bolder;
+}
