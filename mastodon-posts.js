@@ -131,7 +131,7 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
                   }
                 }),
               );
-              toot.media_attachments.forEach(({type, url}) => {
+              toot.media_attachments.forEach(({type, url, description}) => {
                 switch (type) {
                   case "image": {
                     tootElem.append(
@@ -139,9 +139,10 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
                       mkElem("a", "toot-image-link", "", a => {
                         a.href = url;
                         a.target = "_blank";
-                        a.append(
-                          mkElem("img", "toot-image", "", img => { img.src = url; }),
-                        );
+                        a.append(mkElem("img", "toot-image", "", img => {
+                          img.src = url;
+                          img.title = description;
+                        }));
                       }),
                     );
                     break;
