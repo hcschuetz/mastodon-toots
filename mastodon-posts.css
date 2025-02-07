@@ -11,6 +11,11 @@
   .toot-time {
     font-size: smaller;
   }
+  .toot-avatar {
+    display: block;
+    height: 40px;
+    border-radius: 10px;
+  }
   .toot-display-name {
     display: inline;
     font-weight: bolder;

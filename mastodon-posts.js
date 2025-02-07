@@ -115,6 +115,7 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
             this.append(mkElem("div", "toot", "", tootElem => {
               tootElem.append(
                 mkElem("div", "toot-time", formatDate(new Date(toot.created_at))),
+                mkElem("img", "toot-avatar", "", img => img.src = toot.account.avatar),
                 mkElem("div", "toot-display-name", "", el => {
                   el.append(displayName(toot.account));
                 }),
