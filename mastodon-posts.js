@@ -4,6 +4,23 @@
 customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement {
     async connectedCallback() {
 
+      const displayName = ({display_name, emojis}) => {
+        const emojiObj =
+          Object.fromEntries(emojis.map(({shortcode, url}) => [shortcode, url]));
+
+        const out = document.createDocumentFragment();
+        let prev = 0;
+        for (const match of display_name.matchAll(/:([a-z0-9_]+):/gi)) {
+          out.append(display_name.substring(prev, match.index));
+          prev = match.index + match[0].length;
+
+          const url = emojiObj[match[1]];
+          out.append(!url ? match[0] : mkElem("img", "emoji", "", img => img.src = url))
+        }
+        out.append(display_name.substring(prev));
+        return out;
+      }
+
       const domParser = new DOMParser();
 
       /**
@@ -13,10 +30,11 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
        * OTOH we might also restrict the attribute values.
        */
       const allowed = {
-        A: ["class", "href", "rel", "translate", "target"],
+        A: ["class", "href", "rel", "target", "translate"],
         BR: [],
+        I: [],
         P: [],
-        SPAN: ["class"],
+        SPAN: ["class", "translate"],
       };
 
       /**
@@ -97,7 +115,9 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
             this.append(mkElem("div", "toot", "", tootElem => {
               tootElem.append(
                 mkElem("div", "toot-time", formatDate(new Date(toot.created_at))),
-                mkElem("div", "toot-display-name", toot.account.display_name),
+                mkElem("div", "toot-display-name", "", el => {
+                  el.append(displayName(toot.account));
+                }),
                 mkElem("a", "toot-user", "@" + toot.account.acct, a => {
                   a.href = toot.account.url;
                   a.target = "_blank";

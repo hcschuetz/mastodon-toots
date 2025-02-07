@@ -14,14 +14,15 @@
   .toot-display-name {
     display: inline;
     font-weight: bolder;
-    text-decoration: underline;
+    img.emoji {
+      height: .65lh;
+    }
+    &::after {
+      content: " ";
+    }
   }
   .toot-user {
     display: inline;
-    text-decoration: none;
-    &::before {
-      content: " ";
-    }
     &:hover {
       text-decoration: underline;
     }
