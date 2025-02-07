@@ -23,7 +23,6 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
         date.getMinutes()    .toString().padStart(2, "0");
 
       try {
-        // TODO Do not hard-wire parameters
         const params = [];
         const limitAttr = this.getAttribute("limit");
         if (limitAttr) { params.push(["limit", limitAttr]); }
