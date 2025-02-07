@@ -22,14 +22,13 @@
     border: 2px solid black;
     padding: 8px;
   ">
-    <a href="https://fosstodon.org/@rauschma" style="
-      display: block;
-      font-size: larger;
+    <div style="
+      font-size: 130%;
       font-weight: bolder;
       margin-bottom: .5ex;
     ">
       Mastodon
-    </a>
+    </div>
     <mastodon-posts
       style="
         display: block;
@@ -58,21 +57,31 @@
       <p>
         The column on the left contains recent toots from a mastodon account.
         This is implemented by a web component using the Mastodon REST API.
-        including boosts (= reblogs) but no replies.
       </p>
       <p>
         The component provides attributes for configuring the toot retrieval:
       </p>
       <ul>
         <li>
-          the Mastodon instance and the account id of the originator,
+          The Mastodon instance and the account id of the originator
           <br>
           (Using the numeric <code>id</code> instead of the <code>username</code>
           saves one roundtrip for looking up the <code>id</code>.)
         </li>
         <li>Flags to omit replies or boosts</li>
-        <li>An optional limit, defaulting to the instance's default limit</li>
+        <li>
+          An optional limit for the number of retrieved toots,
+          defaulting to the instance's default limit
+        </li>
       </ul>
+      <p>
+        The output of the component does not go to shadow DOM.
+        So it can be tweaked using CSS styling for the main ("light") DOM tree.
+      </p>
+      <p>
+        The component implementation can be used out of the box if it fits your
+        needs, but is also easy to adapt/extend.
+      </p>
       <p>
         Features that might be added:
       </p>
