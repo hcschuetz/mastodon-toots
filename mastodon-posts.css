@@ -12,9 +12,10 @@
     font-size: smaller;
   }
   .toot-avatar {
-    display: block;
+    float: left;
     height: 40px;
     border-radius: 10px;
+    margin-right: 5px;
   }
   .toot-display-name {
     display: inline;
@@ -31,6 +32,11 @@
     &:hover {
       text-decoration: underline;
     }
+  }
+  .toot-content {
+    clear: left;
+    padding-top: 1px;
+    min-height: .5ex;
   }
   .toot-image {
     width: 200px;
