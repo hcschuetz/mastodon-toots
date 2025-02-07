@@ -3,8 +3,10 @@
     width: 200px;
     overflow-x: auto;
     padding-bottom: 5px;
-    border-bottom: 2px solid black;
-    margin-bottom: 10px;
+    &:not(:last-child) {
+      border-bottom: 2px solid black;
+      margin-bottom: 10px;
+    }
   }
   .toot-time {
     font-size: smaller;
@@ -30,5 +32,13 @@
   .error {
     color: red;
     font-weight: bolder;
+  }
+
+  /* Classes from the toot content: */
+  .ellipsis::after {
+    content: "...";
+  }
+  .invisible {
+    display: none;
   }
 }

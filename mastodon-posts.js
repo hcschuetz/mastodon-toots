@@ -4,10 +4,45 @@
 customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement {
     async connectedCallback() {
 
+      const domParser = new DOMParser();
+
+      /**
+       * A positive list of allowed tags and attribute names.
+       * 
+       * This is quite restrictive and might need to be extended.
+       * OTOH we might also restrict the attribute values.
+       */
+      const allowed = {
+        A: ["class", "href", "rel", "translate", "target"],
+        BR: [],
+        P: [],
+        SPAN: ["class"],
+      };
+
+      /**
+       * Check a DOM subtree for illegal content.
+       * 
+       * Does not fix the tree by removing bad parts, but simply throws.
+       */
+      function sanitize({tagName, attributes, children}) {
+        const allowedAttrs = allowed[tagName];
+        if (!allowedAttrs) {
+          throw "sanitize: unexpected node tag " + tagName;
+        }
+        for (const {name} of attributes) {
+          if (!allowedAttrs.includes(name)) {
+            throw `sanitize: attribute "${name}" not allowed in ${tagName} element`;
+          }
+        }
+        for (const child of children) {
+          sanitize(child);
+        }
+      }
+
       function mkElem(tag, className, content, tweak) {
         const elem = document.createElement(tag);
         elem.className = className;
-        elem.innerHTML = content; // TODO sanitize
+        elem.textContent = content;
         tweak?.(elem);
         return elem;
       }
@@ -55,30 +90,53 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
         }
         this.innerHTML = "";
         for (let toot of toots) {
-          // Show boosts as if they were direct:
-          toot = toot.reblog ?? toot;
+          try {
+            // Show boosts as if they were direct toots:
+            toot = toot.reblog ?? toot;
 
-          this.append(mkElem("div", "toot", "", tootElem => {
-            tootElem.append(
-              mkElem("div", "toot-time", formatDate(new Date(toot.created_at))),
-              mkElem("div", "toot-display-name", toot.account.display_name),
-              mkElem("a", "toot-user", "@" + toot.account.acct, a => {
-                a.href = toot.account.url;
-              }),
-              mkElem("div", "toot-content", toot.content),
-            );
-            toot.media_attachments.forEach(({type, url}) => {
-              switch (type) {
-                case "image": {
-                  tootElem.append(
-                    mkElem("img", "toot-image", "", img => { img.src = url; }),
-                  );
-                  break;
+            this.append(mkElem("div", "toot", "", tootElem => {
+              tootElem.append(
+                mkElem("div", "toot-time", formatDate(new Date(toot.created_at))),
+                mkElem("div", "toot-display-name", toot.account.display_name),
+                mkElem("a", "toot-user", "@" + toot.account.acct, a => {
+                  a.href = toot.account.url;
+                  a.target = "_blank";
+                }),
+                mkElem("div", "toot-content", "", contentElem => {
+                  const doc = domParser.parseFromString(toot.content, "text/html");
+                  for (const child of doc.body.children) {
+                    sanitize(child);
+                    contentElem.append(child);
+                  }
+                }),
+              );
+              toot.media_attachments.forEach(({type, url}) => {
+                switch (type) {
+                  case "image": {
+                    tootElem.append(
+                      // It's a bit simplistic to open the image in a new tab:
+                      mkElem("a", "toot-image-link", "", a => {
+                        a.href = url;
+                        a.target = "_blank";
+                        a.append(
+                          mkElem("img", "toot-image", "", img => { img.src = url; }),
+                        );
+                      }),
+                    );
+                    break;
+                  }
+                  // TODO support more media types
+                  default: {
+                    console.warn(`cannot render "${type}" attachment`);
+                    break;
+                  }
                 }
-                // TODO support more media types
-              }
-            });
-          }));
+              });
+            }));
+          } catch (error) {
+            console.error(error, toot);
+            this.append(mkElem("div", "toot error", "could not render toot"));
+          }
         }
       } catch (error) {
         this.append(mkElem("div", "error", error));
