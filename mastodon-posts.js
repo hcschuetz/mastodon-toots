@@ -61,6 +61,7 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
           this.append(mkElem("div", "toot", "", tootElem => {
             tootElem.append(
               mkElem("div", "toot-time", formatDate(new Date(toot.created_at))),
+              mkElem("div", "toot-display-name", toot.account.display_name),
               mkElem("a", "toot-user", "@" + toot.account.acct, a => {
                 a.href = toot.account.url;
               }),

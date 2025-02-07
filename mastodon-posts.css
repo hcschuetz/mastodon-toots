@@ -5,9 +5,20 @@
 .mastodon-posts .toot-time {
   font-size: smaller;
 }
-.mastodon-posts .toot-user {
+.mastodon-posts .toot-display-name {
+  display: inline;
   font-weight: bolder;
   text-decoration: underline;
+}
+.mastodon-posts .toot-user {
+  display: inline;
+  text-decoration: none;
+  &::before {
+    content: " ";
+  }
+  &:hover {
+    text-decoration: underline;
+  }
 }
 .mastodon-posts .toot-content {
   width: 200px;
