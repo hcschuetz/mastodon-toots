@@ -5,20 +5,22 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
     async connectedCallback() {
 
       const displayName = ({display_name, emojis}) => {
+        // See the "reference implementation" at
+        // https://github.com/mastodon/mastodon/blob/1cf30717dbe7a0038a645c62f19deef7efc42207/app/javascript/mastodon/features/emoji/emoji.js#L30
         const emojiObj =
           Object.fromEntries(emojis.map(({shortcode, url}) => [shortcode, url]));
 
-        const out = document.createDocumentFragment();
+        const result = new DocumentFragment();
         let prev = 0;
-        for (const match of display_name.matchAll(/:([a-z0-9_]+):/gi)) {
-          out.append(display_name.substring(prev, match.index));
+        for (const match of display_name.matchAll(/:([^:]*):/gi)) {
+          result.append(display_name.substring(prev, match.index));
           prev = match.index + match[0].length;
 
           const url = emojiObj[match[1]];
-          out.append(!url ? match[0] : mkElem("img", "emoji", "", img => img.src = url))
+          result.append(!url ? match[0] : mkElem("img", "emoji", "", img => img.src = url))
         }
-        out.append(display_name.substring(prev));
-        return out;
+        result.append(display_name.substring(prev));
+        return result;
       }
 
       const domParser = new DOMParser();
