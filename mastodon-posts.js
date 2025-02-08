@@ -115,20 +115,22 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
             this.append(mkElem("div", "toot", "", tootElem => {
               tootElem.append(
                 mkElem("div", "toot-time", formatDate(new Date(toot.created_at))),
-                mkElem("a", "toot-avatar-link", "", a => {
-                  a.href = toot.account.avatar;
-                  a.target = "_blank";
-                  a.append(mkElem("img", "toot-avatar", "", img => {
-                    img.src = toot.account.avatar;
-                  }));
-                }),
-                mkElem("div", "toot-display-name", "", el => {
-                  el.append(displayName(toot.account));
-                }),
-                mkElem("a", "toot-user", "@" + toot.account.acct, a => {
-                  a.href = toot.account.url;
-                  a.target = "_blank";
-                }),
+                mkElem("div", "toot-author", "", el => el.append(
+                  mkElem("a", "toot-avatar-link", "", a => {
+                    a.href = toot.account.avatar;
+                    a.target = "_blank";
+                    a.append(mkElem("img", "toot-avatar", "", img => {
+                      img.src = toot.account.avatar;
+                    }));
+                  }),
+                  mkElem("div", "toot-display-name", "", el => {
+                    el.append(displayName(toot.account));
+                  }),
+                  mkElem("a", "toot-user", "@" + toot.account.acct, a => {
+                    a.href = toot.account.url;
+                    a.target = "_blank";
+                  }),
+                )),
                 mkElem("div", "toot-content", "", contentElem => {
                   const doc = domParser.parseFromString(toot.content, "text/html");
                   for (const child of doc.body.children) {

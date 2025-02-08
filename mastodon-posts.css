@@ -11,6 +11,13 @@
   .toot-time {
     font-size: smaller;
   }
+  .toot-author {
+    min-height: 40px;
+    border-radius: 10px;
+    padding: 3px;
+    overflow-x: auto;
+    background-color: #ddd;
+  }
   .toot-avatar {
     float: left;
     height: 40px;
@@ -34,9 +41,7 @@
     }
   }
   .toot-content {
-    clear: left;
-    padding-top: 1px;
-    min-height: .5ex;
+    min-height: 1em;
   }
   .toot-image {
     width: 200px;
