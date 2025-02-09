@@ -33,7 +33,10 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
           prev = match.index + match[0].length;
 
           const url = emojiObj[match[1]];
-          result.append(!url ? match[0] : mkElem("img", "emoji", "", img => img.src = url))
+          result.append(!url ? match[0] : mkElem("img", "emoji", "", img => {
+            img.src = url;
+            img.title = match[0];
+          }));
         }
         result.append(display_name.substring(prev));
         return result;
@@ -131,6 +134,7 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
                   mkLink("toot-avatar-link", toot.account.avatar, "", a => {
                     a.append(mkElem("img", "toot-avatar", "", img => {
                       img.src = toot.account.avatar;
+                      img.title = `avatar of user @${toot.account.username}`;
                     }));
                   }),
                   mkElem("div", "toot-display-name", "", el => {
