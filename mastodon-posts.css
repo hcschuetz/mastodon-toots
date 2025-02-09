@@ -1,12 +1,25 @@
 .mastodon-posts {
+  display: block;
+  overflow-y: auto;
+
+  a {
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+      opacity: .7;
+    }
+  }
+
   .toot {
     width: 200px;
     overflow-x: auto;
-    padding-bottom: 5px;
-    &:not(:last-child) {
-      border-bottom: 2px solid black;
-      margin-bottom: 10px;
+    &:not(:first-child) {
+      border-top: 2px solid black;
+      padding-top: 10px;
     }
+  }
+  .toot-link {
+    font-size: smaller;
   }
   .toot-time {
     font-size: smaller;
@@ -36,15 +49,25 @@
   }
   .toot-user {
     display: inline;
-    &:hover {
-      text-decoration: underline;
-    }
+    font-size: smaller;
   }
   .toot-content {
     min-height: 1em;
   }
-  .toot-image {
-    width: 200px;
+  .toot-image, .toot-video {
+    box-sizing: border-box;
+    width: 100%;
+    /*
+      The border separates any image-internal padding from adjacent whitespace
+      (such as our padding-bottom).
+    */
+    border: 1px solid grey;
+    margin-bottom: 10px;
+  }
+  .toot-attachment-link {
+    display: block;
+    box-sizing: border-box;
+    margin-bottom: 10px;
   }
   .error {
     color: red;

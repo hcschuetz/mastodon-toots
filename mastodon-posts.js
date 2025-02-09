@@ -4,6 +4,22 @@
 customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement {
     async connectedCallback() {
 
+      function mkElem(tag, className, content, tweak) {
+        const elem = document.createElement(tag);
+        elem.className = className;
+        elem.textContent = content;
+        tweak?.(elem);
+        return elem;
+      }
+
+      const mkLink = (class_, href, content, tweak) =>
+        mkElem("a", class_, content, el => {
+          el.href = href;
+          el.target = "_blank";
+          el.rel = "noopener noreferrer";
+          tweak?.(el);
+      });
+
       const displayName = ({display_name, emojis}) => {
         // See the "reference implementation" at
         // https://github.com/mastodon/mastodon/blob/1cf30717dbe7a0038a645c62f19deef7efc42207/app/javascript/mastodon/features/emoji/emoji.js#L30
@@ -33,8 +49,10 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
        */
       const allowed = {
         A: ["class", "href", "rel", "target", "translate"],
+        B: [],
         BR: [],
         I: [],
+        EM: [],
         P: [],
         SPAN: ["class", "translate"],
       };
@@ -59,21 +77,12 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
         }
       }
 
-      function mkElem(tag, className, content, tweak) {
-        const elem = document.createElement(tag);
-        elem.className = className;
-        elem.textContent = content;
-        tweak?.(elem);
-        return elem;
-      }
-
       // It's probably possible to get this formatting with some standard
-      // date/time-formatting function, but it's easier to just implement
-      // this directly:
+      // date/time-formatting function:
       const formatDate = date =>
         date.getFullYear()   .toString().padStart(4, "0") + "-" +
         (date.getMonth() + 1).toString().padStart(2, "0") + "-" +
-        date.getDay()        .toString().padStart(2, "0") + " " +
+        date.getDate()       .toString().padStart(2, "0") + " " +
         date.getHours()      .toString().padStart(2, "0") + ":" +
         date.getMinutes()    .toString().padStart(2, "0");
 
@@ -116,11 +125,10 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
 
             this.append(mkElem("div", "toot", "", tootElem => {
               tootElem.append(
-                mkElem("div", "toot-time", formatDate(new Date(toot.created_at))),
+                mkLink("toot-link", toot.url, "🔗"),
+                mkElem("span", "toot-time", formatDate(new Date(toot.created_at))),
                 mkElem("div", "toot-author", "", el => el.append(
-                  mkElem("a", "toot-avatar-link", "", a => {
-                    a.href = toot.account.avatar;
-                    a.target = "_blank";
+                  mkLink("toot-avatar-link", toot.account.avatar, "", a => {
                     a.append(mkElem("img", "toot-avatar", "", img => {
                       img.src = toot.account.avatar;
                     }));
@@ -128,10 +136,7 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
                   mkElem("div", "toot-display-name", "", el => {
                     el.append(displayName(toot.account));
                   }),
-                  mkElem("a", "toot-user", "@" + toot.account.acct, a => {
-                    a.href = toot.account.url;
-                    a.target = "_blank";
-                  }),
+                  mkLink("toot-user", toot.account.url, "@" + toot.account.acct),
                 )),
                 mkElem("div", "toot-content", "", contentElem => {
                   const doc = domParser.parseFromString(toot.content, "text/html");
@@ -141,25 +146,35 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
                   }
                 }),
               );
-              toot.media_attachments.forEach(({type, url, description}) => {
+              toot.media_attachments.forEach(({type, url, preview_url, description}) => {
                 switch (type) {
                   case "image": {
                     tootElem.append(
                       // It's a bit simplistic to open the image in a new tab:
-                      mkElem("a", "toot-image-link", "", a => {
-                        a.href = url;
-                        a.target = "_blank";
+                      mkLink("toot-image-link", url, "", a => {
                         a.append(mkElem("img", "toot-image", "", img => {
                           img.src = url;
-                          img.title = description;
+                          img.title = description ?? "";
                         }));
+                      }),
+                    );
+                    break;
+                  }
+                  case "video": {
+                    console.log(toot.media_attachments);
+                    tootElem.append(
+                      mkElem("video", "toot-video", "", el => {
+                        el.src = url;
+                        el.poster = preview_url;
+                        el.controls = true;
+                        el.title = description ?? "";
                       }),
                     );
                     break;
                   }
                   // TODO support more media types
                   default: {
-                    console.warn(`cannot render "${type}" attachment`);
+                    tootElem.append(mkLink("toot-attachment-link", url, `[${type} attachment]`));
                     break;
                   }
                 }
