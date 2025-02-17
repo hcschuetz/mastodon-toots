@@ -144,7 +144,7 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
                 )),
                 mkElem("div", "toot-content", "", contentElem => {
                   const doc = domParser.parseFromString(toot.content, "text/html");
-                  for (const child of doc.body.children) {
+                  for (const child of [...doc.body.children]) {
                     sanitize(child);
                     contentElem.append(child);
                   }
