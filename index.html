@@ -53,11 +53,7 @@
 
       exclude-replies
       limit=10
-    ><!--
-      Notes:
-      - With multiple attributes of the same name the first one seem to win.
-      - pixelfed.social does not support cross-origin access.
-    --></mastodon-posts>
+    ></mastodon-posts>
   </div>
   <div style="
     display: inline-block;
@@ -74,7 +70,7 @@
       </p>
       <p>
         The column on the left contains recent toots from a mastodon account.
-        This is implemented by a web component using the Mastodon REST API.
+        This is implemented by a web component using Mastodon's REST API.
       </p>
       <p>
         The component provides attributes for configuring the toot retrieval:
@@ -94,11 +90,11 @@
       </ul>
       <p>
         The output of the component does not go to shadow DOM.
-        So it can be tweaked using CSS styling for the main ("light") DOM tree.
+        So it can be styled with CSS for the main ("light") DOM tree.
       </p>
       <p>
-        The component implementation can be used out of the box if it fits your
-        needs, but is also easy to adapt/extend.
+        The component only works if CORS is enabled by the server.
+        All the mastodon servers I tried actually had this enabled.
       </p>
       <p>
         Features that might be added:
@@ -112,9 +108,25 @@
         <li>Internationalization/localization of error messages</li>
         <li>Support for attribute changes (such as showing a different account)</li>
       </ul>
+      <p>
+        Contributions and suggestions welcome!
+        (To my mastodon account @hcschuetz@mastodon.social,
+        in the discussion section of the github repo,
+        or even as a pull request.)
+      </p>
+      <p>
+        I haven't npm-packaged the code (yet) because
+        users of the component will probably want to tweak a few
+        things here and there.
+        I don't want to complicate the code by adding a lot of
+        configurability.  It should be easy (for web developers)
+        to tweak (their copy of) the code directly.
+        Furthermore these tweaks may depend on third-party code,
+        but I'd like to avoid dependencies in the "vanilla" version.
+      </p>
       <hr>
       <p>
-        Some dummy text below allows to see how the two columns can be
+        The dummy text below allows to see how the two columns can be
         scrolled independently.
       </p>
       <p>Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
