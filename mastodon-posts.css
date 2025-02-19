@@ -1,4 +1,4 @@
-.mastodon-posts {
+mastodon-posts {
   display: block;
   overflow-y: auto;
 
@@ -53,6 +53,7 @@
   }
   .toot-content {
     min-height: 1em;
+    overflow-wrap: anywhere;
   }
   .toot-image, .toot-video {
     box-sizing: border-box;
