@@ -1,7 +1,7 @@
-// A Web Component Displaying some User's Mastodon Posts
+// A Web Component Displaying some User's Mastodon Toots
 // -----------------------------------------------------
 
-customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement {
+customElements.define('mastodon-toots', class MastodonToots extends HTMLElement {
     async connectedCallback() {
 
       function mkElem(tag, className, content, tweak) {
@@ -109,11 +109,11 @@ customElements.define('mastodon-posts', class MastodonPosts extends HTMLElement 
           "?" + params.map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join("&")
         }`;
 
-        // TODO? update posts repeatedly (asking only for new posts)
+        // TODO? update toots repeatedly (asking only for new toots)
         const response = await fetch(statusURL);
         if (!response.ok) {
           // TODO internationalize
-          throw `Could not get mastodon posts (HTTP status: ${response.status})`;
+          throw `Could not get mastodon toots (HTTP status: ${response.status})`;
         }
         const toots = await response.json();
         if (toots.length === 0) {

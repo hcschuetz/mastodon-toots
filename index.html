@@ -2,8 +2,8 @@
 <html>
 <head>
   <title>Embedding Mastodon Feeds</title>
-  <link rel='stylesheet' type='text/css' media='screen' href='mastodon-posts.css'>
-  <script src="mastodon-posts.js"></script>
+  <link rel='stylesheet' type='text/css' media='screen' href='mastodon-toots.css'>
+  <script src="mastodon-toots.js"></script>
   <style>
     body {
       font-family: Arial, Helvetica, sans-serif;
@@ -38,7 +38,7 @@
           overflow-wrap: anywhere;
         }
       }
-      mastodon-posts {
+      mastodon-toots {
         background-color: white;
         padding: 8px;
       }
@@ -63,12 +63,12 @@
           rel="noopener noreferrer"
         >@Mastodon@mastodon.social</a>:
       </header>
-      <mastodon-posts
+      <mastodon-toots
         instance="mastodon.social"
         id=13179
         exclude-replies
         limit=10
-      ></mastodon-posts>
+      ></mastodon-toots>
     </section>
     <section class="toot-box">
       <header>
@@ -79,12 +79,12 @@
           rel="noopener noreferrer"
         >@w3c@w3c.social</a>:
       </header>
-      <mastodon-posts
+      <mastodon-toots
         instance="w3c.social"
         id=109312765426318587
         exclude-replies
         limit=10
-      ></mastodon-posts>
+      ></mastodon-toots>
     </section>
   </div>
   <div style="
@@ -135,7 +135,7 @@
         <li>Support more types of attached media</li>
         <li>Support custom emojis also in the toot content</li>
         <li>Preview referenced web pages</li>
-        <li>Regular or user-triggered updates for displaying new posts</li>
+        <li>Regular or user-triggered updates for displaying new toots</li>
         <li>Internationalization/localization of error messages</li>
         <li>Support for attribute changes (such as showing a different account)</li>
       </ul>
