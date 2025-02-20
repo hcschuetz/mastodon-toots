@@ -104,18 +104,28 @@
         This is implemented by a web component using Mastodon's REST API.
       </p>
       <p>
-        The component provides attributes for configuring the toot retrieval:
+        The <code>&lt;mastodon-toots&gt;</code> component provides attributes
+        for configuring the toot retrieval:
       </p>
       <ul>
         <li>
-          The Mastodon instance and the account id of the originator
+          The Mastodon <code>instance</code> and the account <code>id</code>
+          of the originator
           <br>
-          (Using the numeric <code>id</code> instead of the <code>username</code>
-          saves one roundtrip for an <code>id</code> lookup.)
+          (Using the numeric id instead of the username
+          saves one roundtrip for an id lookup.)
         </li>
-        <li>Flags to omit replies or boosts</li>
         <li>
-          An optional limit for the number of retrieved toots,
+          Flags <code>exclude-replies</code> and <code>exclude-reblogs</code>
+          to omit replies or boosts
+          <br>
+          (Note that the component checks for the presence/absence of these
+          attributes.  So <code>exclude-replies="false"</code> will <em>not</em>
+          include replies.  If you want to include replies, just omit the
+          <code>exclude-replies</code> attribute.)
+        </li>
+        <li>
+          An optional <code>limit</code> for the number of retrieved toots,
           defaulting to the instance's default limit
         </li>
       </ul>
