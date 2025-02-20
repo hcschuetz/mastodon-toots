@@ -1,4 +1,7 @@
 mastodon-toots {
+  box-sizing: border-box;
+  width: 210px;
+  max-width: 210px;
   display: block;
   overflow-y: auto;
 
@@ -11,7 +14,8 @@ mastodon-toots {
   }
 
   .toot {
-    width: 200px;
+    box-sizing: border-box;
+    width: 100%;
     overflow-x: auto;
     &:not(:first-child) {
       border-top: 2px solid black;
@@ -60,7 +64,6 @@ mastodon-toots {
     width: 100%;
     /*
       The border separates any image-internal padding from adjacent whitespace
-      (such as our padding-bottom).
     */
     border: 1px solid grey;
     margin-bottom: 10px;
