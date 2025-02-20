@@ -17,10 +17,13 @@
       row-gap: 10px;
     }
     .toot-boxes {
+      box-sizing: border-box;
       width: 220px;
       height: 100vh;
+      padding: 5px;
       display: grid;
-      grid-template-rows: 50vh 50vh;
+      gap: 5px;
+      grid-template-rows: 1fr 1fr;
       grid-template-rows: auto;
     }
     .toot-box {
@@ -28,7 +31,6 @@
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      margin: 5px; 
       border: 2px solid black;
       background-color: #ddd;
       header {
@@ -43,12 +45,30 @@
         padding: 8px;
       }
     }
+    main {
+      max-width: 800px;
+      height: 100vh;
+      overflow-y: auto;
+      & > * {
+        margin: 0 20px;
+      }
+    }
+    .todo {
+      border: 2px solid red;
+      padding: 4px;
+      &::before {
+        content: "TODO:";
+      }
+    }
     code {
       font-size: larger;
       background-color: #ddd;
       padding: 0 3px;
       margin: 0 -3px;
       border-radius: 4px;
+    }
+    .dummy {
+      color: grey;
     }
   </style>
 </head>
@@ -87,17 +107,11 @@
       ></mastodon-toots>
     </section>
   </div>
-  <div style="
-    display: inline-block;
-    margin: 0 50px;
-    max-width: 800px;
-    height: calc(100vh - 20px);
-    overflow-y: auto;
-  ">
-    <div style="margin: 0 20px">
+  <main>
+    <div>
       <h1>Embedding Mastodon Feeds</h1>
-      <div style="border: 2px solid red; padding: 4px;">
-        TODO: Make this demo page usable on narrow devices.
+      <div class="todo">
+        Make this demo page usable on narrow devices.
       </div>
       <p>
         The column on the left contains recent toots from two mastodon accounts.
@@ -180,7 +194,7 @@
         Here comes some dummy text just to see that we can scroll this
         text column independently from the toot boxes:
       </p>
-      <div style="color: grey;">
+      <div class="dummy">
         <p>Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
         <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
@@ -190,6 +204,6 @@
         <p>Consetetur sadipscing elitr,  sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr,  sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr,  sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
       </div>
     </div>
-  </div>
+  </main>
 </body>
 </html>
