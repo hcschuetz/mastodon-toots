@@ -75,18 +75,17 @@ function sanitize({tagName, attributes, children}) {
   }
 }
 
-// It's probably possible to get this formatting with some standard
-// date/time-formatting function:
+/** Format date as YYYY-MM-DD HH:mm */
 const formatDate = date =>
+  // Is there a simpler way to implement this without using third-party code
+  // such as moment.js?
   date.getFullYear()   .toString().padStart(4, "0") + "-" +
   (date.getMonth() + 1).toString().padStart(2, "0") + "-" +
   date.getDate()       .toString().padStart(2, "0") + " " +
   date.getHours()      .toString().padStart(2, "0") + ":" +
   date.getMinutes()    .toString().padStart(2, "0");
 
-// A Web Component Displaying some User's Mastodon Toots
-// -----------------------------------------------------
-
+/** A Web Component Displaying some User's Mastodon Toots */
 export default
 class MastodonToots extends HTMLElement {
   async connectedCallback() {
@@ -106,11 +105,10 @@ class MastodonToots extends HTMLElement {
       }/api/v1/accounts/${
         this.getAttribute("id")
       }/statuses${
-        params.length === 0 ? "" :
-        "?" + params.map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join("&")
+        params.map(([k, v], i) =>
+          `${i ? "&" : "?"}${k}=${encodeURIComponent(v)}`).join("")
       }`;
 
-      // TODO? update toots repeatedly (asking only for new toots)
       const response = await fetch(statusURL);
       if (!response.ok) {
         // TODO internationalize
