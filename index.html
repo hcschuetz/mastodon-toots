@@ -177,9 +177,10 @@
           for more query parameters.
         </li>
         <li>
-          <code>https://mastodon.social/api/v1/timelines/tag/cats?limit=10</code>
+          <code>https://mastodon.social/api/v1/timelines/tag/cats?only_media=true&limit=10</code>
           retrieves up to 10 recent toots
           with hashtag <code>#cats</code>
+          and with at least one media attachment
           from <code>mastodon.social</code>.
         </li>
         <li>
@@ -297,7 +298,7 @@
         toots from mastodon.social:
       </header>
       <mastodon-toots
-        url="https://mastodon.social/api/v1/timelines/tag/cats?limit=10"
+        url="https://mastodon.social/api/v1/timelines/tag/cats?only_media=true&limit=10"
       ></mastodon-toots>
     </section>
   </div>
