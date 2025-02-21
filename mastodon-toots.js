@@ -145,7 +145,6 @@ class MastodonToots extends HTMLElement {
                   break;
                 }
                 case "video": {
-                  console.log(toot.media_attachments);
                   tootElem.append(
                     mkElem("video", "toot-video", "", el => {
                       el.src = url;
