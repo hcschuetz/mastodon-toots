@@ -31,17 +31,20 @@
       flex-direction: column;
       align-items: stretch;
       border: 2px solid black;
+      border-radius: 6px;
       background-color: #ddd;
-      header {
+      > header {
         font-weight: bolder;
         padding: 6px;
         a {
           overflow-wrap: anywhere;
         }
       }
-      mastodon-toots {
+      > mastodon-toots {
         background-color: white;
         padding: 8px;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
       }
     }
     main {
