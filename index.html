@@ -191,20 +191,55 @@
         Furthermore such tweaks may depend on third-party code,
         but I'd like to avoid dependencies in the "vanilla" version.
       </p>
-      <hr>
+      <h2>Similar Projects</h2>
       <p>
-        Here comes some dummy text just to see that we can scroll this
-        text column independently from the toot boxes:
+        There are various instructions and projects doing similar
+        (but somewhat different) things.
+        I am aware of these:
       </p>
-      <div class="dummy">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-        <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
-        <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-        <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.</p>
-        <p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr,  sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr,  At accusam aliquyam diam diam dolore dolores duo eirmod eos erat, et nonumy sed tempor et et invidunt justo labore Stet clita ea et gubergren, kasd magna no rebum. sanctus sea sed takimata ut vero voluptua. est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr,  sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.</p>
-        <p>Consetetur sadipscing elitr,  sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr,  sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr,  sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-      </div>
+      <ul>
+        <li>
+          <a href="https://gitlab.com/idotj/mastodon-embed-timeline"
+            target="_blank" rel="noopener noreferrer"
+          >Mastodon embed timeline widget</a>:<br>
+          Seems to be more powerful than the code here, but also more heavy-weight.
+        </li>
+        <li>
+          <a href="https://github.com/sampsyo/emfed"
+            target="_blank" rel="noopener noreferrer"
+          >Emfed: Simple Client-Side Mastodon Feed Embedding</a>:<br>
+          Quite similar in scope to the project here.
+          Comes as an npm package with a dependency on dompurify.
+        </li>
+        <li>
+          <a href="https://en-gb.wordpress.org/plugins/include-mastodon-feed/"
+            target="_blank" rel="noopener noreferrer"
+          >Include Mastodon Feed</a>:<br>
+          A wordpress plugin with similar functionality.
+        </li>
+        <li>
+          <a href="https://github.com/fenwick67/mastofeed"
+            target="_blank" rel="noopener noreferrer"
+          >mastofeed</a>:<br>
+          A server-based approach.  The server provides a document which can be
+          embedded in a web page as an IFRAME.
+          (There's also the fork
+          <a href="https://git.froth.zone/sam/fedifeed" target="_blank" rel="noopener noreferrer"
+          >fedifeed</a> with additional functionality.)
+        </li>
+        <li>
+          <a href="https://hellocoding.de/blog/coding-language/javascript/mastodon-feed-in-die-webseite"
+            target="_blank" rel="noopener noreferrer"
+          >Integration des Mastodon-Feeds in die eigene Webseite</a>:<br>
+          Instructions in German.  More basic than the code here.
+          But it also covers an RSS-based approach.
+        </li>
+      </ul>
+      <p>
+        So you have to find your compromise
+        between functionality and simplicity as well as
+        between ready-made and easily adaptable code.
+      </p>
     </div>
   </main>
 </body>
