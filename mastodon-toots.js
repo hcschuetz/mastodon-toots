@@ -90,26 +90,7 @@ export default
 class MastodonToots extends HTMLElement {
   async connectedCallback() {
     try {
-      const params = [];
-      const limitAttr = this.getAttribute("limit");
-      if (limitAttr) { params.push(["limit", limitAttr]); }
-      if (this.getAttribute("exclude-replies") != null) {
-        params.push(["exclude_replies", "true"]);
-      }
-      if (this.getAttribute("exclude-reblogs") != null) {
-        params.push(["exclude_reblogs", "true"]);
-      }
-
-      const statusURL = `https://${
-        this.getAttribute("instance")
-      }/api/v1/accounts/${
-        this.getAttribute("id")
-      }/statuses${
-        params.map(([k, v], i) =>
-          `${i ? "&" : "?"}${k}=${encodeURIComponent(v)}`).join("")
-      }`;
-
-      const response = await fetch(statusURL);
+      const response = await fetch(this.getAttribute("url"));
       if (!response.ok) {
         // TODO internationalize
         throw `Could not get mastodon toots (HTTP status: ${response.status})`;

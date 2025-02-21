@@ -11,7 +11,7 @@
       margin: 0;
       padding: 0;
       display: grid;
-      grid-template-columns: 220px auto;
+      grid-template-columns: 220px auto 220px;
       grid-template-rows: auto;
       row-gap: 10px;
     }
@@ -23,8 +23,6 @@
       padding: 5px;
       display: grid;
       gap: 5px;
-      grid-template-rows: 1fr 1fr;
-      grid-template-rows: auto;
     }
     .toot-box {
       box-sizing: border-box;
@@ -50,6 +48,7 @@
       max-width: 800px;
       height: 100vh;
       overflow-y: auto;
+      overflow-wrap: anywhere;
       & > * {
         box-sizing: border-box;
         margin: 0 20px;
@@ -86,10 +85,7 @@
         >@Mastodon@mastodon.social</a>:
       </header>
       <mastodon-toots
-        instance="mastodon.social"
-        id=13179
-        exclude-replies
-        limit=10
+        url="https://mastodon.social/api/v1/accounts/13179/statuses?limit=10&exclude-replies=true"
       ></mastodon-toots>
     </section>
     <section class="toot-box">
@@ -102,10 +98,7 @@
         >@w3cdevs@w3c.social</a>:
       </header>
       <mastodon-toots
-        instance="w3c.social"
-        id=109312765426318587
-        exclude-replies
-        limit=10
+        url="https://w3c.social/api/v1/accounts/109312765426318587/statuses?limit=10&exclude-replies=true"
       ></mastodon-toots>
     </section>
   </div>
@@ -116,33 +109,68 @@
         Make this demo page usable on narrow devices.
       </div>
       <p>
-        The column on the left contains recent toots from two mastodon accounts.
+        The column on the left contains recent toots from two mastodon accounts
+        while the column on the right contains recent toots with some hashtag.
         This is implemented by a web component using Mastodon's REST API.
       </p>
       <p>
-        The <code>&lt;mastodon-toots&gt;</code> component provides attributes
-        for configuring the toot retrieval:
+        The <code>&lt;mastodon-toots&gt;</code> component takes a single
+        attribute <code>url</code> for retrieving the toots.
+        You can use any URL of the mastodon API that provides a JSON array of
+        "<a href="https://docs.joinmastodon.org/entities/Status/"
+          target="_blank" rel="noopener noreferrer">statuses</a>"
+        (= posts = toots).
+        See the mastodon API docs on retrieving
+        <a href="https://docs.joinmastodon.org/client/public/#timelines"
+          target="_blank" rel="noopener noreferrer"
+        >timelines</a>
+        and
+        <a href="https://docs.joinmastodon.org/client/public/#posts"
+          target="_blank" rel="noopener noreferrer"
+        >statuses</a>.
+      </p>
+      <p>
+        For example:
       </p>
       <ul>
         <li>
-          The Mastodon <code>instance</code> and the account <code>id</code>
-          of the originator
+          <code>https://mastodon.social/api/v1/accounts/13179/statuses?limit=10&exclude-replies=true</code>
+          retrieves up to 10 recent toots
+          from <code>@Mastodon@mastodon.social</code>
+          which are not replies, but which may be boosts.
+          (Notice that the numeric user id of that user is 13179.)
           <br>
-          (Using the numeric id instead of the username
-          saves one roundtrip for an id lookup.)
+          Required parameters:
+          <ul>
+            <li>
+              The mastodon instance goes to the host part of the URL.
+            </li>
+            <li>
+              The numeric user id goes to the URL path.
+            </li>
+          </ul>
+          The remaining parameters are given as query parameters and optional:
+          <ul>
+            <li>
+              <code>limit</code> gives a maximum number of toots to be retrieved.
+            </li>
+            <li>
+              <code>exclude-replies</code> and <code>exclude-reblogs</code>
+              are boolean parameters.  When set to <code>true</code>,
+              replies or boosts are excluded from the toot list.
+            </li>
+          </ul>
         </li>
         <li>
-          Flags <code>exclude-replies</code> and <code>exclude-reblogs</code>
-          to omit replies or boosts
-          <br>
-          (Note that the component checks for the presence/absence of these
-          attributes.  So <code>exclude-replies="false"</code> will <em>not</em>
-          include replies.  If you want to include replies, just omit the
-          <code>exclude-replies</code> attribute.)
+          <code>https://mastodon.social/api/v1/timelines/tag/cats?limit=10</code>
+          retrieves up to 10 recent toots
+          with hashtag <code>#cats</code>
+          from <code>mastodon.social</code>.
         </li>
         <li>
-          An optional <code>limit</code> for the number of retrieved toots,
-          defaulting to the instance's default limit
+          <code>https://mastodon.social/api/v1/timelines/public</code>
+          retrieves a server-defined number of recent toots
+          from <code>mastodon.social</code>.
         </li>
       </ul>
       <p>
@@ -242,5 +270,21 @@
       </p>
     </div>
   </main>
+  <div class="toot-boxes">
+    <section class="toot-box">
+      <header>
+        Latest
+        <a
+          href="https://mastodon.social/tags/cats"
+          target="_blank"
+          rel="noopener noreferrer"
+        >#cats</a>
+        toots from mastodon.social:
+      </header>
+      <mastodon-toots
+        url="https://mastodon.social/api/v1/timelines/tag/cats?limit=10"
+      ></mastodon-toots>
+    </section>
+  </div>
 </body>
 </html>
