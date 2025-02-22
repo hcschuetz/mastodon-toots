@@ -130,7 +130,8 @@ class MastodonToots extends HTMLElement {
                 }
               }),
             );
-            toot.media_attachments.forEach(({type, url, preview_url, description}) => {
+            toot.media_attachments.forEach(attachment => {
+              const {type, url, preview_url, description} = attachment;
               switch (type) {
                 case "image":
                 case "gifv": {
@@ -158,6 +159,7 @@ class MastodonToots extends HTMLElement {
                 }
                 // TODO support more media types
                 default: {
+                  console.error("unsupported attachment:", attachment);
                   tootElem.append(mkLink("toot-attachment-link", url, `[${type} attachment]`));
                   break;
                 }
