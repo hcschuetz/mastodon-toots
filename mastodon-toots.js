@@ -132,9 +132,10 @@ class MastodonToots extends HTMLElement {
             );
             toot.media_attachments.forEach(({type, url, preview_url, description}) => {
               switch (type) {
-                case "image": {
+                case "image":
+                case "gifv": {
                   tootElem.append(
-                    // It's a bit simplistic to open the image in a new tab:
+                    // Simply open the url in a new tab:
                     mkLink("toot-image-link", url, "", a => {
                       a.append(mkElem("img", "toot-image", "", img => {
                         img.src = preview_url;
