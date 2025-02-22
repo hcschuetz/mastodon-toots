@@ -130,20 +130,25 @@ class MastodonToots extends HTMLElement {
                 }
               }),
             );
+
+            function attach(preview_url, description, link_url) {
+              tootElem.append(
+                // Simply open the url in a new tab:
+                mkLink("toot-image-link", link_url, "", a => {
+                  a.append(mkElem("img", "toot-image", "", img => {
+                    img.src = preview_url;
+                    img.title = description ?? "";
+                  }));
+                }),
+              );
+            }
+
             toot.media_attachments.forEach(attachment => {
               const {type, url, preview_url, description} = attachment;
               switch (type) {
                 case "image":
                 case "gifv": {
-                  tootElem.append(
-                    // Simply open the url in a new tab:
-                    mkLink("toot-image-link", url, "", a => {
-                      a.append(mkElem("img", "toot-image", "", img => {
-                        img.src = preview_url;
-                        img.title = description ?? "";
-                      }));
-                    }),
-                  );
+                  attach(preview_url, description, url);
                   break;
                 }
                 case "video": {
@@ -158,6 +163,17 @@ class MastodonToots extends HTMLElement {
                   break;
                 }
                 // TODO support more media types
+                case "unknown": {
+                  // An incompatibility between mastodon instances?
+                  // But we might be able to use a remote_url:
+                  const {remote_url} = attachment;
+                  if (remote_url) {
+                    console.warn("attachment with unknown type:", attachment);
+                    attach(remote_url, description, remote_url);
+                    break;
+                  }
+                  // ...else fall through
+                }
                 default: {
                   console.error("unsupported attachment:", attachment);
                   tootElem.append(mkLink("toot-attachment-link", url, `[${type} attachment]`));
