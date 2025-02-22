@@ -137,7 +137,7 @@ class MastodonToots extends HTMLElement {
                     // It's a bit simplistic to open the image in a new tab:
                     mkLink("toot-image-link", url, "", a => {
                       a.append(mkElem("img", "toot-image", "", img => {
-                        img.src = url;
+                        img.src = preview_url;
                         img.title = description ?? "";
                       }));
                     }),
