@@ -102,108 +102,112 @@ class MastodonToots extends HTMLElement {
       }
       this.innerHTML = "";
       for (let toot of toots) {
-        try {
-          // Show boosts as if they were direct toots:
-          toot = toot.reblog ?? toot;
-
-          this.append(mkElem("div", "toot", "", tootElem => {
-            tootElem.append(
-              mkLink("toot-link", toot.url, "🔗"),
-              mkElem("span", "toot-time", formatDate(new Date(toot.created_at))),
-              mkElem("div", "toot-author", "", el => el.append(
-                mkLink("toot-avatar-link", toot.account.avatar, "", a => {
-                  a.append(mkElem("img", "toot-avatar", "", img => {
-                    img.src = toot.account.avatar;
-                    img.title = `avatar of user @${toot.account.username}`;
-                  }));
-                }),
-                mkElem("div", "toot-display-name", "", el => {
-                  el.append(displayName(toot.account));
-                }),
-                mkLink("toot-user", toot.account.url, "@" + toot.account.acct),
-              )),
-              ...toot.spoiler_text ? [
-                mkElem("p", "spoiler-text", toot.spoiler_text),
-              ] : [],
-              ...toot.sensitive ? [
-                // TODO internationalize
-                mkElem("button", "toot-show-sensitive", "show/hide content", button => {
-                    button.addEventListener("click", () => {
-                      tootElem.querySelector(".toot-content").classList.toggle("hidden");
-                    },
-                  );
-                }),
-              ] : [],
-              mkElem("div", "toot-content", "", contentElem => {
-                if (toot.sensitive) {
-                  contentElem.classList.add("hidden");
-                }
-                const doc = domParser.parseFromString(toot.content, "text/html");
-                for (const child of [...doc.body.children]) {
-                  sanitize(child);
-                  contentElem.append(child);
-                }
-
-                function attach(preview_url, description, link_url) {
-                  contentElem.append(
-                    // Simply open the url in a new tab:
-                    mkLink("toot-image-link", link_url, "", a => {
-                      a.append(mkElem("img", "toot-image", "", img => {
-                        img.src = preview_url;
-                        img.title = description ?? "";
-                      }));
-                    }),
-                  );
-                }
-
-                toot.media_attachments.forEach(attachment => {
-                  const {type, url, preview_url, description} = attachment;
-                  switch (type) {
-                    case "image":
-                    case "gifv": {
-                      attach(preview_url, description, url);
-                      break;
-                    }
-                    case "video": {
-                      contentElem.append(
-                        mkElem("video", "toot-video", "", el => {
-                          el.src = url;
-                          el.poster = preview_url;
-                          el.controls = true;
-                          el.title = description ?? "";
-                        }),
-                      );
-                      break;
-                    }
-                    // TODO support more media types
-                    case "unknown": {
-                      // An incompatibility between mastodon instances?
-                      // But we might be able to use a remote_url:
-                      const {remote_url} = attachment;
-                      if (remote_url) {
-                        console.warn("attachment with unknown type:", attachment);
-                        attach(remote_url, description, remote_url);
-                        break;
-                      }
-                      // ...else fall through
-                    }
-                    default: {
-                      console.error("unsupported attachment:", attachment);
-                      contentElem.append(mkLink("toot-attachment-link", url, `[${type} attachment]`));
-                      break;
-                    }
-                  }
-                });
-              }),
-            );
-          }));
-        } catch (error) {
-          console.error(error, toot);
-          this.append(mkElem("div", "toot error", "could not render toot"));
-        }
+        this.emitToot(toot);
       }
     } catch (error) {
       this.append(mkElem("div", "error", error));
+    }
+  }
+
+  emitToot(toot) {
+    try {
+      // Show boosts as if they were direct toots:
+      toot = toot.reblog ?? toot;
+
+      this.append(mkElem("div", "toot", "", tootElem => {
+        tootElem.append(
+          mkLink("toot-link", toot.url, "🔗"),
+          mkElem("span", "toot-time", formatDate(new Date(toot.created_at))),
+          mkElem("div", "toot-author", "", el => el.append(
+            mkLink("toot-avatar-link", toot.account.avatar, "", a => {
+              a.append(mkElem("img", "toot-avatar", "", img => {
+                img.src = toot.account.avatar;
+                img.title = `avatar of user @${toot.account.username}`;
+              }));
+            }),
+            mkElem("div", "toot-display-name", "", el => {
+              el.append(displayName(toot.account));
+            }),
+            mkLink("toot-user", toot.account.url, "@" + toot.account.acct),
+          )),
+          ...toot.spoiler_text ? [
+            mkElem("p", "spoiler-text", toot.spoiler_text),
+          ] : [],
+          ...toot.sensitive ? [
+            // TODO internationalize
+            mkElem("button", "toot-show-sensitive", "show/hide content", button => {
+                button.addEventListener("click", () => {
+                  tootElem.querySelector(".toot-content").classList.toggle("hidden");
+                },
+              );
+            }),
+          ] : [],
+          mkElem("div", "toot-content", "", contentElem => {
+            if (toot.sensitive) {
+              contentElem.classList.add("hidden");
+            }
+            const doc = domParser.parseFromString(toot.content, "text/html");
+            for (const child of [...doc.body.children]) {
+              sanitize(child);
+              contentElem.append(child);
+            }
+
+            function attach(preview_url, description, link_url) {
+              contentElem.append(
+                // Simply open the url in a new tab:
+                mkLink("toot-image-link", link_url, "", a => {
+                  a.append(mkElem("img", "toot-image", "", img => {
+                    img.src = preview_url;
+                    img.title = description ?? "";
+                  }));
+                }),
+              );
+            }
+
+            toot.media_attachments.forEach(attachment => {
+              const {type, url, preview_url, description} = attachment;
+              switch (type) {
+                case "image":
+                case "gifv": {
+                  attach(preview_url, description, url);
+                  break;
+                }
+                case "video": {
+                  contentElem.append(
+                    mkElem("video", "toot-video", "", el => {
+                      el.src = url;
+                      el.poster = preview_url;
+                      el.controls = true;
+                      el.title = description ?? "";
+                    }),
+                  );
+                  break;
+                }
+                // TODO support more media types
+                case "unknown": {
+                  // An incompatibility between mastodon instances?
+                  // But we might be able to use a remote_url:
+                  const {remote_url} = attachment;
+                  if (remote_url) {
+                    console.warn("attachment with unknown type:", attachment);
+                    attach(remote_url, description, remote_url);
+                    break;
+                  }
+                  // ...else fall through
+                }
+                default: {
+                  console.error("unsupported attachment:", attachment);
+                  contentElem.append(mkLink("toot-attachment-link", url, `[${type} attachment]`));
+                  break;
+                }
+              }
+            });
+          }),
+        );
+      }));
+    } catch (error) {
+      console.error(error, toot);
+      this.append(mkElem("div", "toot error", "could not render toot"));
     }
   }
 };
