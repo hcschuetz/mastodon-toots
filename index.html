@@ -5,6 +5,53 @@
   <link rel="icon" href="data:;base64,=">
   <link rel='stylesheet' type='text/css' media='screen' href='mastodon-toots.css'>
   <script src="mastodon-toots.js" type="module"></script>
+  <script type="module">
+    document.querySelector("#account_input").addEventListener("change", () => {
+      const output = document.querySelector('#account_id');
+      const {value} = event.target;
+      const parts = value.trim().split('@');
+      if (parts[0] === '') {
+        parts.shift();
+      }
+      if (parts.length !== 2) {
+        output.textContent = 'unexpected account syntax: ' + value;
+        return;
+      }
+      const [username, instance] = parts;
+      (async function() {
+        try {
+          output.textContent = `contacting ${instance} ...`;
+          const response = await fetch(
+          `https://${
+            encodeURIComponent(instance)
+          }/api/v1/accounts/lookup?acct=${
+            encodeURIComponent(username)
+          }`);
+        if (!response.ok) {
+          output.textContent =
+            `could not retrieve user name "${
+              username
+            }" from "${
+              instance
+            }"`;
+          return;
+        }
+        const json = await response.json();
+        // TODO check if there's an id
+        output.textContent =
+          `The id of account "${
+            username
+          }" on "${
+            instance
+          }" is "${
+            json.id
+          }".`;
+        } catch (e) {
+          output.textContent = `lookup failed: ${e.message}`;
+        }
+      })();
+    });
+  </script>
   <style>
     body {
       font-family: Arial, Helvetica, sans-serif;
@@ -193,6 +240,22 @@
           from <code>mastodon.social</code>.
         </li>
       </ul>
+      <div style="border: 1px solid black; padding: 5px;">
+        <p style="margin: 0; padding: 0;">
+          Here is a quick&dirty tool for finding an account id.
+          <br>
+          Type the account's username and instance (separated by "@")
+          in the input field and press the Enter key.
+        </p>
+        <input id="account_input" type="text"
+          style="margin: 8px 0;"
+          size="40"
+          placeholder="@mastodon@mastodon.social"
+        >
+        <p style="min-height: 1lh; margin: 0; padding: 0;">
+          <output id="account_id"></output>
+        </p>
+      </div>
       <p>
         The output of the component does not go to shadow DOM.
         So it can be styled with CSS for the main ("light") DOM tree.
