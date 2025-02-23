@@ -122,6 +122,7 @@ class MastodonToots extends HTMLElement {
             mkLink("toot-avatar-link", toot.account.avatar, "", a => {
               a.append(mkElem("img", "toot-avatar", "", img => {
                 img.src = toot.account.avatar;
+                // TODO internationalize
                 img.title = `avatar of user @${toot.account.username}`;
               }));
             }),
