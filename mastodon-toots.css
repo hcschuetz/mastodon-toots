@@ -72,6 +72,7 @@ mastodon-toots {
   .toot-content {
     min-height: 1em;
     overflow-wrap: anywhere;
+    white-space: pre-wrap;
     &.hidden {
       visibility: hidden;
     }
