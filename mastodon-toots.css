@@ -55,9 +55,26 @@ mastodon-toots {
     display: inline;
     font-size: smaller;
   }
+  .spoiler-text {
+    margin: 1ex 0 0 0;
+  }
+  button.toot-show-sensitive {
+    border: none;
+    padding: 3px 5px;
+    margin: 1ex 0 0 0;
+    border-radius: 2px;
+    background-color: #008;
+    color: #fff;
+    &:hover {
+      opacity: 70%;
+    }
+  }
   .toot-content {
     min-height: 1em;
     overflow-wrap: anywhere;
+    &.hidden {
+      visibility: hidden;
+    }
   }
   .toot-image, .toot-video {
     box-sizing: border-box;

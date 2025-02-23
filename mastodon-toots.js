@@ -122,65 +122,80 @@ class MastodonToots extends HTMLElement {
                 }),
                 mkLink("toot-user", toot.account.url, "@" + toot.account.acct),
               )),
+              ...toot.spoiler_text ? [
+                mkElem("p", "spoiler-text", toot.spoiler_text),
+              ] : [],
+              ...toot.sensitive ? [
+                // TODO internationalize
+                mkElem("button", "toot-show-sensitive", "show/hide content", button => {
+                    button.addEventListener("click", () => {
+                      tootElem.querySelector(".toot-content").classList.toggle("hidden");
+                    },
+                  );
+                }),
+              ] : [],
               mkElem("div", "toot-content", "", contentElem => {
+                if (toot.sensitive) {
+                  contentElem.classList.add("hidden");
+                }
                 const doc = domParser.parseFromString(toot.content, "text/html");
                 for (const child of [...doc.body.children]) {
                   sanitize(child);
                   contentElem.append(child);
                 }
-              }),
-            );
 
-            function attach(preview_url, description, link_url) {
-              tootElem.append(
-                // Simply open the url in a new tab:
-                mkLink("toot-image-link", link_url, "", a => {
-                  a.append(mkElem("img", "toot-image", "", img => {
-                    img.src = preview_url;
-                    img.title = description ?? "";
-                  }));
-                }),
-              );
-            }
-
-            toot.media_attachments.forEach(attachment => {
-              const {type, url, preview_url, description} = attachment;
-              switch (type) {
-                case "image":
-                case "gifv": {
-                  attach(preview_url, description, url);
-                  break;
-                }
-                case "video": {
-                  tootElem.append(
-                    mkElem("video", "toot-video", "", el => {
-                      el.src = url;
-                      el.poster = preview_url;
-                      el.controls = true;
-                      el.title = description ?? "";
+                function attach(preview_url, description, link_url) {
+                  contentElem.append(
+                    // Simply open the url in a new tab:
+                    mkLink("toot-image-link", link_url, "", a => {
+                      a.append(mkElem("img", "toot-image", "", img => {
+                        img.src = preview_url;
+                        img.title = description ?? "";
+                      }));
                     }),
                   );
-                  break;
                 }
-                // TODO support more media types
-                case "unknown": {
-                  // An incompatibility between mastodon instances?
-                  // But we might be able to use a remote_url:
-                  const {remote_url} = attachment;
-                  if (remote_url) {
-                    console.warn("attachment with unknown type:", attachment);
-                    attach(remote_url, description, remote_url);
-                    break;
+
+                toot.media_attachments.forEach(attachment => {
+                  const {type, url, preview_url, description} = attachment;
+                  switch (type) {
+                    case "image":
+                    case "gifv": {
+                      attach(preview_url, description, url);
+                      break;
+                    }
+                    case "video": {
+                      contentElem.append(
+                        mkElem("video", "toot-video", "", el => {
+                          el.src = url;
+                          el.poster = preview_url;
+                          el.controls = true;
+                          el.title = description ?? "";
+                        }),
+                      );
+                      break;
+                    }
+                    // TODO support more media types
+                    case "unknown": {
+                      // An incompatibility between mastodon instances?
+                      // But we might be able to use a remote_url:
+                      const {remote_url} = attachment;
+                      if (remote_url) {
+                        console.warn("attachment with unknown type:", attachment);
+                        attach(remote_url, description, remote_url);
+                        break;
+                      }
+                      // ...else fall through
+                    }
+                    default: {
+                      console.error("unsupported attachment:", attachment);
+                      contentElem.append(mkLink("toot-attachment-link", url, `[${type} attachment]`));
+                      break;
+                    }
                   }
-                  // ...else fall through
-                }
-                default: {
-                  console.error("unsupported attachment:", attachment);
-                  tootElem.append(mkLink("toot-attachment-link", url, `[${type} attachment]`));
-                  break;
-                }
-              }
-            });
+                });
+              }),
+            );
           }));
         } catch (error) {
           console.error(error, toot);
