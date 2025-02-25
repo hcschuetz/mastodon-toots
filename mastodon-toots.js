@@ -19,7 +19,11 @@ function ELEM(tagAndClasses, props = {}, children = [], tweak) {
 const LINK = (className, href, content) =>
   ELEM("a", {className, href, target: "_blank", rel: "noopener noreferrer"}, content);
 
-const displayName = ({display_name, emojis}) => {
+/**
+ * Expand emojis in the `display_name` of an account
+ * @returns a DOM fragment.
+ */
+function displayName({display_name, emojis}) {
   // See the "reference implementation" at
   // https://github.com/mastodon/mastodon/blob/1cf30717dbe7a0038a645c62f19deef7efc42207/app/javascript/mastodon/features/emoji/emoji.js#L30
   const emojiObj =
