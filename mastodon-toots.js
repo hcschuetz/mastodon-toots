@@ -114,6 +114,9 @@ class MastodonToots extends HTMLElement {
     try {
       // Show boosts as if they were direct toots:
       toot = toot.reblog ?? toot;
+      // This makes sense in the original use case where the feed is from
+      // a single account, but not necessarily in other feeds.
+      // TODO optionally show reblogger info.
 
       /** the toot-content element, if the toot is sensitive */
       let hidable;
