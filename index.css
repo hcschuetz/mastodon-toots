@@ -77,3 +77,17 @@ code {
 .dummy {
   color: grey;
 }
+
+.lookup-id-box {
+  border: 1px solid black;
+  padding: 5px;
+
+  input {
+    margin: 8px 0;
+  }
+  > p {
+    min-height: 1lh;
+    margin: 0;
+    padding: 0;
+  }
+}
