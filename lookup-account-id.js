@@ -34,13 +34,7 @@ function lookupAccountId(event) {
     const json = await response.json();
     // TODO check if there's an id
     output.textContent =
-      `The id of account "${
-        username
-      }" on "${
-        instance
-      }" is "${
-        json.id
-      }".`;
+      `Account "${username}" on "${instance}" has id "${json.id}".`;
     } catch (e) {
       output.textContent = `lookup failed: ${e.message}`;
     }
