@@ -74,7 +74,10 @@ mastodon-toots {
     overflow-wrap: anywhere;
     white-space: pre-wrap;
     &.hidden {
-      visibility: hidden;
+      background-color: grey;
+      > * {
+        visibility: hidden;
+      }
     }
   }
   .toot-image, .toot-video {
