@@ -49,11 +49,14 @@ const domParser = new DOMParser();
 const allowed = {
   A: ["class", "href", "rel", "target", "translate"],
   B: [],
+  EM: [],
   BR: [],
   I: [],
-  EM: [],
+  LI: [],
   P: [],
   SPAN: ["class", "translate"],
+  STRONG: [],
+  UL: [],
 };
 
 /**
