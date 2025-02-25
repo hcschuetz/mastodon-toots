@@ -2,21 +2,21 @@ const input = document.querySelector("#account_input");
 const output = document.querySelector('#account_id');
 input.addEventListener("change", lookupAccountId);
 
-function lookupAccountId(event) {
-  const {value} = event.target;
-  const parts = value.trim().split('@');
-  if (parts[0] === '') {
-    parts.shift();
-  }
-  if (parts.length !== 2) {
-    output.value = `Unexpected account syntax: "${value}"`;
-    return;
-  }
-  const [username, instance] = parts;
-  (async function() {
-    try {
+async function lookupAccountId() {
+  try {
+    const {value} = input;
+    const parts = value.trim().split('@');
+    if (parts[0] === '') {
+      parts.shift();
+    }
+    if (parts.length !== 2) {
+      output.value = `Unexpected account syntax: "${value}"`;
+      return;
+    }
+    const [username, instance] = parts;
       output.value = `Contacting ${instance} ...`;
-      const response = await fetch(
+
+    const response = await fetch(
       `https://${
         encodeURIComponent(instance)
       }/api/v1/accounts/lookup?acct=${
@@ -28,11 +28,14 @@ function lookupAccountId(event) {
       return;
     }
     const json = await response.json();
-    // TODO check if there's an id
+    if (json.id == undefined) {
+      output.value =
+        `No id provided for "${username}" on "${instance}"`;
+      return;
+    }
     output.value =
       `Account "${username}" on "${instance}" has id "${json.id}".`;
-    } catch (e) {
-      output.value = `Lookup failed: ${e.message}`;
-    }
-  })();
+  } catch (e) {
+    output.value = `Lookup failed: ${e.message}`;
+  }
 }
