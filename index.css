@@ -79,7 +79,7 @@ code {
 }
 
 .lookup-id-box {
-  border: 1px solid black;
+  background-color: #ddd;
   padding: 5px;
 
   input {
