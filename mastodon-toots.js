@@ -11,7 +11,7 @@ function ELEM(tagAndClasses, props = {}, children = [], tweak) {
   for (const c of classes) {
     elem.classList.add(c);
   }
-  elem.append(...children);
+  elem.append(...children.filter(x => x)); // removing falsy elements for convenience
   tweak?.(elem);
   return elem;
 }
@@ -223,9 +223,6 @@ class MastodonToots extends HTMLElement {
             }
           });
 
-          const IF = (value, fn) =>
-            value ? [fn(value)] : [];
-
           const {card} = toot;
           if (card) {
             try {
@@ -233,18 +230,19 @@ class MastodonToots extends HTMLElement {
               contentElem.append(
                 // TODO use type?  What to do for a video? Embed?
                 LINK("card", url, [
-                  ...IF(image, () => ELEM("img", {src: image, title: image_description ?? ""})),
-                  ...IF(title, () => ELEM("header.title", {}, [title])),
-                  ...IF(description, () => ELEM("p.description", {}, [description])),
+                  image && ELEM("img", {src: image, title: image_description ?? ""}),
+                  title && ELEM("header.title", {}, [title]),
+                  description && ELEM("p.description", {}, [description]),
                   // The html element might contain <iframe>s with many attributes.
                   // Can we trust this?
                   // ...IF(html, () => sanitized(html)),
                 ]),
-                ...(authors ?? []).map(author => LINK("author", author.url, author.name)),
+                ...(authors ?? []).map(author => LINK("author", author.url, [author.name])),
               );
             } catch (e) {
+              console.error(e);
               contentElem.append(
-                ELEM("div.card.error", {}, "could not render card: " + e),
+                ELEM("div.card.error", {}, ["could not render card: " + e]),
               )
             }
           }
