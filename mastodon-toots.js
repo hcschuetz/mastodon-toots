@@ -83,6 +83,16 @@ function sanitize({tagName, attributes, children}) {
   }
 }
 
+function sanitized(html) {
+  const out = new DocumentFragment();
+  const doc = domParser.parseFromString(html, "text/html");
+  for (const child of [...doc.body.children]) {
+    sanitize(child);
+    out.append(child);
+  }
+  return out;
+}
+
 /** Format date as YYYY-MM-DD HH:mm */
 const formatDate = date =>
   // Is there a simpler way to implement this without using third-party code
@@ -161,11 +171,7 @@ class MastodonToots extends HTMLElement {
             contentElem.classList.add("hidden");
             hidable = contentElem;
           }
-          const doc = domParser.parseFromString(toot.content, "text/html");
-          for (const child of [...doc.body.children]) {
-            sanitize(child);
-            contentElem.append(child);
-          }
+          contentElem.append(sanitized(toot.content));
 
           function attach(preview_url, description, link_url) {
             contentElem.append(
@@ -216,6 +222,32 @@ class MastodonToots extends HTMLElement {
               }
             }
           });
+
+          const IF = (value, fn) =>
+            value ? [fn(value)] : [];
+
+          const {card} = toot;
+          if (card) {
+            try {
+              const {type, url, description, title, image, image_description, html, authors, } = card;
+              contentElem.append(
+                // TODO use type?  What to do for a video? Embed?
+                LINK("card", url, [
+                  ...IF(image, () => ELEM("img", {src: image, title: image_description ?? ""})),
+                  ...IF(title, () => ELEM("header.title", {}, [title])),
+                  ...IF(description, () => ELEM("p.description", {}, [description])),
+                  // The html element might contain <iframe>s with many attributes.
+                  // Can we trust this?
+                  // ...IF(html, () => sanitized(html)),
+                ]),
+                ...(authors ?? []).map(author => LINK("author", author.url, author.name)),
+              );
+            } catch (e) {
+              contentElem.append(
+                ELEM("div.card.error", {}, "could not render card: " + e),
+              )
+            }
+          }
         }),
       ]));
     } catch (error) {
