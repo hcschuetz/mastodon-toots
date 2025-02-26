@@ -77,6 +77,23 @@ mastodon-toots {
     > p {
       margin: 1ex 0;
     }
+    > .toot-image-link {
+      display: block;
+      margin-bottom: 5px;
+      > .toot-image,
+      > .toot-video {
+        box-sizing: border-box;
+        width: 100%;
+        /*
+          The border separates any image-internal padding from adjacent whitespace
+        */
+        border: 1px solid grey;
+      }
+    }
+    > .toot-attachment-link {
+      display: block;
+      box-sizing: border-box;
+    }
     > :last-child {
       margin-bottom: 0;
     }
@@ -87,23 +104,11 @@ mastodon-toots {
       }
     }
   }
-  .toot-image, .toot-video {
-    box-sizing: border-box;
-    width: 100%;
-    /*
-      The border separates any image-internal padding from adjacent whitespace
-    */
-    border: 1px solid grey;
-    margin-bottom: 10px;
-  }
-  .toot-attachment-link {
-    display: block;
-    box-sizing: border-box;
-  }
 
   .card {
     display: block;
     box-sizing: border-box;
+    width: 100%;
     margin-bottom: 10px;
     border: 1px solid black;
     border-radius: 3px;
@@ -119,12 +124,18 @@ mastodon-toots {
       margin-top: 5px;
       font-weight: bolder;
     }
+    > p.description {
+      margin: 10px 0 0  ;
+    }
     > :last-child {
       margin-bottom: 0;
     }
-  }
-  .author {
-    display: block;
+    >.card-author {
+      display: block;
+      margin-top: 5px;
+      text-align: end;
+      font-size: smaller;
+    }
   }
 
   .error {

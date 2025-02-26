@@ -234,10 +234,11 @@ class MastodonToots extends HTMLElement {
                   title && ELEM("header.title", {}, [title]),
                   description && ELEM("p.description", {}, [description]),
                   // The html element might contain <iframe>s with many attributes.
-                  // Can we trust this?
-                  // ...IF(html, () => sanitized(html)),
-                ]),
-                ...(authors ?? []).map(author => LINK("author", author.url, [author.name])),
+                  // html & sanitized(html),
+                  ...(authors ?? []).map(author =>
+                    author.name && LINK("card-author", author.url, [author.name])
+                  ),
+                  ]),
               );
             } catch (e) {
               console.error(e);
