@@ -74,6 +74,12 @@ mastodon-toots {
     min-height: 1em;
     overflow-wrap: anywhere;
     white-space: pre-wrap;
+    > p {
+      margin: 1ex 0;
+    }
+    > :last-child {
+      margin-bottom: 0;
+    }
     &.hidden {
       background-color: grey;
       > * {
@@ -106,14 +112,14 @@ mastodon-toots {
     &:hover { text-decoration: none; }
     color: black;
 
-    img {
+    > img {
       width: 100%;
     }
-    header.title {
+    > header.title {
       margin-top: 5px;
       font-weight: bolder;
     }
-    p.description {
+    > :last-child {
       margin-bottom: 0;
     }
   }
