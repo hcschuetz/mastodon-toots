@@ -80,8 +80,7 @@ mastodon-toots {
     > .toot-image-link {
       display: block;
       margin-bottom: 5px;
-      > .toot-image,
-      > .toot-video {
+      > .toot-image {
         box-sizing: border-box;
         width: 100%;
         /*
@@ -89,6 +88,9 @@ mastodon-toots {
         */
         border: 1px solid grey;
       }
+    }
+    > .toot-video {
+      width: 100%;
     }
     > .toot-attachment-link {
       display: block;
