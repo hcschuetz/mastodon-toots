@@ -247,6 +247,28 @@ class MastodonToots extends HTMLElement {
               )
             }
           }
+
+          if (toot.poll) {
+            const {
+              options, votes_count, expired, expires_at, multiple, voters_count,
+            } = toot.poll;
+            contentElem.append(
+              ELEM("div.poll", {}, [
+                ELEM("div.poll-grid", {}, options.flatMap(option => [
+                  ELEM("div.poll-option", {}, [option.title]),
+                  ELEM("div.poll-count", {}, [`${option.votes_count}/${votes_count}`]),
+                ])),
+                ...multiple ? [
+                  ELEM("div.poll-voters", {}, [`${voters_count}`]),
+                ] : [],
+                ELEM("div.poll-expiry" + (expired ? ".poll-expired" : ""), {}, [
+                  formatDate(new Date(expires_at)),
+                ]),
+                // Debug:
+                // ELEM("pre", {textContent: JSON.stringify(poll, null, 2)}, []),
+              ])
+            );
+          }
         }),
       ]));
     } catch (error) {

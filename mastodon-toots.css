@@ -140,6 +140,38 @@ mastodon-toots {
     }
   }
 
+  .poll {
+    border-radius: 3px;
+    padding: 3px;
+    background-color: #ddd;
+    .poll-grid {
+      font-size: 90%;
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 3px;
+      .poll-count {
+        text-align: end;
+      }
+    }
+    .poll-voters {
+      font-size: 90%;
+      text-align: end;
+      &::before {
+        content: "👥";
+      }
+    }
+    .poll-expiry {
+      margin-top: 3px;
+      font-size: smaller;
+      &::before {
+        content: "✗ ";
+      }
+      &.poll-expired::before {
+        content: "✓ ";
+      }
+    }
+  }
+
   .error {
     color: red;
     font-weight: bolder;
