@@ -238,7 +238,7 @@ class MastodonToots extends HTMLElement {
                   ...(authors ?? []).map(author =>
                     author.name && LINK("card-author", author.url, [author.name])
                   ),
-                  ]),
+                ]),
               );
             } catch (e) {
               console.error(e);
