@@ -145,7 +145,6 @@ mastodon-toots {
     padding: 3px;
     background-color: #ddd;
     .poll-grid {
-      font-size: 90%;
       display: grid;
       grid-template-columns: auto auto;
       gap: 3px;
@@ -154,7 +153,6 @@ mastodon-toots {
       }
     }
     .poll-voters {
-      font-size: 90%;
       text-align: end;
       &::before {
         content: "👥";
