@@ -107,39 +107,6 @@ mastodon-toots {
     }
   }
 
-  .card {
-    display: block;
-    box-sizing: border-box;
-    width: 100%;
-    margin-bottom: 10px;
-    border: 1px solid black;
-    border-radius: 3px;
-    padding: 4px;
-    text-decoration: none;
-    &:hover { text-decoration: none; }
-    color: black;
-
-    > img {
-      width: 100%;
-    }
-    > header.title {
-      margin-top: 5px;
-      font-weight: bolder;
-    }
-    > p.description {
-      margin: 10px 0 0  ;
-    }
-    > :last-child {
-      margin-bottom: 0;
-    }
-    >.card-author {
-      display: block;
-      margin-top: 5px;
-      text-align: end;
-      font-size: smaller;
-    }
-  }
-
   .poll {
     border-radius: 3px;
     padding: 3px;
@@ -173,6 +140,39 @@ mastodon-toots {
       &.poll-expired::before {
         content: "✓ ";
       }
+    }
+  }
+
+  .card {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 4px;
+    text-decoration: none;
+    &:hover { text-decoration: none; }
+    color: black;
+
+    > img {
+      width: 100%;
+    }
+    > header.title {
+      margin-top: 5px;
+      font-weight: bolder;
+    }
+    > p.description {
+      margin: 10px 0 0  ;
+    }
+    > :last-child {
+      margin-bottom: 0;
+    }
+    >.card-author {
+      display: block;
+      margin-top: 5px;
+      text-align: end;
+      font-size: smaller;
     }
   }
 

@@ -223,31 +223,6 @@ class MastodonToots extends HTMLElement {
             }
           });
 
-          const {card} = toot;
-          if (card) {
-            try {
-              const {type, url, description, title, image, image_description, html, authors, } = card;
-              contentElem.append(
-                // TODO use type?  What to do for a video? Embed?
-                LINK("card", url, [
-                  image && ELEM("img", {src: image, title: image_description ?? ""}),
-                  title && ELEM("header.title", {}, [title]),
-                  description && ELEM("p.description", {}, [description]),
-                  // The html element might contain <iframe>s with many attributes.
-                  // html & sanitized(html),
-                  ...(authors ?? []).map(author =>
-                    author.name && LINK("card-author", author.url, [author.name])
-                  ),
-                ]),
-              );
-            } catch (e) {
-              console.error(e);
-              contentElem.append(
-                ELEM("div.card.error", {}, ["could not render card: " + e]),
-              )
-            }
-          }
-
           if (toot.poll) {
             const {
               options, votes_count, expired, expires_at, multiple, voters_count,
@@ -272,6 +247,31 @@ class MastodonToots extends HTMLElement {
                 // ELEM("pre", {textContent: JSON.stringify(poll, null, 2)}, []),
               ])
             );
+          }
+
+          const {card} = toot;
+          if (card) {
+            try {
+              const {type, url, description, title, image, image_description, html, authors, } = card;
+              contentElem.append(
+                // TODO use type?  What to do for a video? Embed?
+                LINK("card", url, [
+                  image && ELEM("img", {src: image, title: image_description ?? ""}),
+                  title && ELEM("header.title", {}, [title]),
+                  description && ELEM("p.description", {}, [description]),
+                  // The html element might contain <iframe>s with many attributes.
+                  // html & sanitized(html),
+                  ...(authors ?? []).map(author =>
+                    author.name && LINK("card-author", author.url, [author.name])
+                  ),
+                ]),
+              );
+            } catch (e) {
+              console.error(e);
+              contentElem.append(
+                ELEM("div.card.error", {}, ["could not render card: " + e]),
+              )
+            }
           }
         }),
       ]));
