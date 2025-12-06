@@ -14,7 +14,6 @@ mastodon-toots {
   }
 
   .toot {
-    box-sizing: border-box;
     width: 100%;
     overflow-x: auto;
     &:not(:first-child) {
@@ -70,16 +69,27 @@ mastodon-toots {
       opacity: 70%;
     }
   }
-  .toot-content {
-    min-height: 1em;
-    overflow-wrap: anywhere;
-    white-space: pre-wrap;
-    > p {
-      margin: 1ex 0;
+  .toot-body {
+    margin-top: 0.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    > .toot-content {
+      min-height: 1em;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+      p {
+        margin-block: 1ex;
+        &:first-child {
+          margin-top: 0;
+        }
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
     }
     > .toot-image-link {
-      display: block;
-      margin-bottom: 5px;
+      display: grid; /* "block" produces some space below the image */
       > .toot-image {
         box-sizing: border-box;
         width: 100%;
@@ -114,6 +124,7 @@ mastodon-toots {
     .poll-grid {
       display: grid;
       grid-template-columns: auto auto;
+      row-gap: 0.2lh;
       .poll-count {
         padding-left: 3px;
         text-align: end;
@@ -147,7 +158,6 @@ mastodon-toots {
     display: block;
     box-sizing: border-box;
     width: 100%;
-    margin-bottom: 10px;
     border: 1px solid black;
     border-radius: 3px;
     padding: 4px;

@@ -166,15 +166,17 @@ class MastodonToots extends HTMLElement {
             );
           }),
         ] : [],
-        ELEM("div.toot-content", {}, [], contentElem => {
+        ELEM("div.toot-body", {}, [], bodyElem => {
           if (toot.sensitive) {
-            contentElem.classList.add("hidden");
-            hidable = contentElem;
+            bodyElem.classList.add("hidden");
+            hidable = bodyElem;
           }
-          contentElem.append(sanitized(toot.content));
+          bodyElem.append(
+            ELEM("div.toot-content", {}, [sanitized(toot.content)]),
+          );
 
           function attach(preview_url, description, link_url) {
-            contentElem.append(
+            bodyElem.append(
               // Simply open the url in a new tab:
               LINK("toot-image-link", link_url, [
                 ELEM("img.toot-image", {src: preview_url, title: description ?? ""}, []),
@@ -191,7 +193,7 @@ class MastodonToots extends HTMLElement {
                 break;
               }
               case "video": {
-                contentElem.append(
+                bodyElem.append(
                   ELEM("video.toot-video", {
                     src: url,
                     poster: preview_url,
@@ -215,7 +217,7 @@ class MastodonToots extends HTMLElement {
               }
               default: {
                 console.error("unsupported attachment:", attachment);
-                contentElem.append(LINK("toot-attachment-link", url, [
+                bodyElem.append(LINK("toot-attachment-link", url, [
                   `[${type} attachment]`,
                 ]));
                 break;
@@ -228,7 +230,7 @@ class MastodonToots extends HTMLElement {
               options, votes_count, expired, expires_at, multiple, voters_count,
             } = toot.poll;
             const maxCount = Math.max(...options.map(o => o.votes_count));
-            contentElem.append(
+            bodyElem.append(
               ELEM("div.poll", {}, [
                 ELEM("div.poll-grid", {}, options.flatMap(o => {
                   const maxClass = o.votes_count === maxCount ? ".poll-max" : "";
@@ -253,7 +255,7 @@ class MastodonToots extends HTMLElement {
           if (card) {
             try {
               const {type, url, description, title, image, image_description, html, authors, } = card;
-              contentElem.append(
+              bodyElem.append(
                 // TODO use type?  What to do for a video? Embed?
                 LINK("card", url, [
                   image && ELEM("img", {src: image, title: image_description ?? ""}),
@@ -268,7 +270,7 @@ class MastodonToots extends HTMLElement {
               );
             } catch (e) {
               console.error(e);
-              contentElem.append(
+              bodyElem.append(
                 ELEM("div.card.error", {}, ["could not render card: " + e]),
               )
             }
