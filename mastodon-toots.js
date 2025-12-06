@@ -252,12 +252,16 @@ class MastodonToots extends HTMLElement {
             const {
               options, votes_count, expired, expires_at, multiple, voters_count,
             } = toot.poll;
+            const maxCount = Math.max(...options.map(o => o.votes_count));
             contentElem.append(
               ELEM("div.poll", {}, [
-                ELEM("div.poll-grid", {}, options.flatMap(option => [
-                  ELEM("div.poll-option", {}, [option.title]),
-                  ELEM("div.poll-count", {}, [`${option.votes_count}/${votes_count}`]),
-                ])),
+                ELEM("div.poll-grid", {}, options.flatMap(o => {
+                  const maxClass = o.votes_count === maxCount ? ".poll-max" : "";
+                  return [
+                    ELEM("div.poll-option" + maxClass, {}, [o.title]),
+                    ELEM("div.poll-count" + maxClass, {}, [`${o.votes_count}/${votes_count}`]),
+                  ];
+                })),
                 ...multiple ? [
                   ELEM("div.poll-voters", {}, [`${voters_count}`]),
                 ] : [],

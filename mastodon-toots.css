@@ -147,9 +147,15 @@ mastodon-toots {
     .poll-grid {
       display: grid;
       grid-template-columns: auto auto;
-      gap: 3px;
       .poll-count {
+        padding-left: 3px;
         text-align: end;
+      }
+      .poll-max {
+        background-color: #bbb;
+        /* &.poll-count::before {
+          content: "∗";
+        } */
       }
     }
     .poll-voters {
