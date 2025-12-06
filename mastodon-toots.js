@@ -57,7 +57,7 @@ const allowed = {
   BR: [],
   I: [],
   LI: [],
-  P: [],
+  P: ["class"],
   SPAN: ["class", "translate"],
   STRONG: [],
   UL: [],
