@@ -72,34 +72,28 @@
           <code>https://mastodon.social/api/v1/accounts/13179/statuses?limit=10&exclude_replies=true</code>
           retrieves up to 10 recent toots
           from <code>@Mastodon@mastodon.social</code>
-          which are not replies, but which may be boosts.
-          (Notice that the numeric account id of that user is 13179.)
-          <br>
-          Required parameters:
-          <ul>
-            <li>
-              The mastodon instance goes to the host part of the URL.
-            </li>
-            <li>
-              The numeric account id goes to the URL path.
-            </li>
-          </ul>
-          The remaining parameters are given as query parameters and optional.
-          The most important ones are:
-          <ul>
-            <li>
-              <code>limit</code> gives a maximum number of toots to be retrieved.
-            </li>
-            <li>
-              <code>exclude_replies</code> and <code>exclude_reblogs</code>
-              are boolean parameters.  When set to <code>true</code>,
-              replies or boosts are excluded from the toot list.
-            </li>
-          </ul>
+          (with the numeric account id 13179)
+          which are not replies but which may be boosts.
           See
           <a href="https://docs.joinmastodon.org/methods/accounts/#query-parameters-1"
             target="_blank" rel="noopener noreferrer">here</a>
           for more query parameters.
+
+          <div class="lookup-id-box">
+            <p style="margin: 0; padding: 0;">
+              Here is a quick&dirty tool for finding an account id.
+              <br>
+              Type the account's username and instance (separated by "@")
+              in the input field and press the Enter key.
+            </p>
+            <input id="account_input" type="text"
+              size="40"
+              placeholder="@mastodon@mastodon.social"
+            >
+            <p>
+              <output id="account_id"></output>
+            </p>
+          </div>
         </li>
         <li>
           <code>https://mastodon.social/api/v1/timelines/tag/cats?only_media=true&limit=10</code>
@@ -114,21 +108,6 @@
           from <code>mastodon.social</code>.
         </li>
       </ul>
-      <div class="lookup-id-box">
-        <p style="margin: 0; padding: 0;">
-          Here is a quick&dirty tool for finding an account id.
-          <br>
-          Type the account's username and instance (separated by "@")
-          in the input field and press the Enter key.
-        </p>
-        <input id="account_input" type="text"
-          size="40"
-          placeholder="@mastodon@mastodon.social"
-        >
-        <p>
-          <output id="account_id"></output>
-        </p>
-      </div>
       <p>
         The output of the component does not go to shadow DOM.
         So it can be styled with CSS for the main ("light") DOM tree.
