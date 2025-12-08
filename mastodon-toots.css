@@ -32,7 +32,7 @@ mastodon-toots {
     min-height: 40px;
     border-radius: 10px;
     padding: 3px;
-    overflow-x: auto;
+    overflow-wrap: anywhere;
     background-color: #ddd;
   }
   .toot-avatar {
